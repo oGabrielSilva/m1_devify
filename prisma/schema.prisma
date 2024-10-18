@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserActionType {
+  LOCK
+  UNLOCK
+  ENABLE
+  DISABLE
+  ADD_AUTHORITY
+  REMOVE_AUTHORITY
+}
+
+model UserAction {
+  actionById Int
+  targetId   Int
+
+  reason  String?
+  details String?
+  action  UserActionType
+
+  createdAt DateTime @default(now())
+
+  @@id([actionById, targetId])
+}
+
+model Authority {
+  id         Int    @id @default(autoincrement())
+  descriptor String @unique
+  users      User   @relation(fields: [userId], references: [id])
+  userId     Int
+}
+
+model UserAuthority {
+  userId      Int
+  authorityId Int
+
+  assignedAt   DateTime @default(now())
+  assignedById Int
+  User         User     @relation(fields: [userId], references: [id])
+
+  @@id([userId, authorityId])
+}
+
+model User {
+  id  Int    @id @default(autoincrement())
+  uid String @unique @default(cuid())
+
+  email          String  @unique @db.VarChar(150)
+  name           String  @db.VarChar(50)
+  username       String  @unique @db.VarChar(55)
+  avatarURL      String?
+  avatarFilePath String?
+  bio            String?
+
+  password        String
+  enabled         Boolean         @default(true)
+  locked          Boolean         @default(false)
+  authorities     Authority[]
+  userAuthorities UserAuthority[]
+  social          Social[]
+  joinedAt        DateTime        @default(now())
+  updatedAt       DateTime        @default(now()) @updatedAt
+}
+
+model Social {
+  id Int @id @default(autoincrement())
+
+  identifier String  @db.VarChar(50)
+  url        String
+  details    String? @db.VarChar(30)
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+}

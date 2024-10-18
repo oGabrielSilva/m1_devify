@@ -1,0 +1,18 @@
+{
+  "appName": "Devify",
+  "api": {
+    "port": 3000,
+    "isDev": true
+  },
+  "details": {
+    "url": "api.devify.cyou"
+  },
+  "language": {
+    "all": [
+      { "code": "pt-BR", "file": "pt_BR.ts" },
+      { "code": "en-US", "file": "en_US.ts" }
+    ],
+    "default": { "code": "pt-BR", "file": "pt_BR.ts" },
+    "headerName": "Preferred-Language"
+  }
+}
