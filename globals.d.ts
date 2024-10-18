@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextFunction, Request, Response } from 'express'
 import props from './application.props.json'
+import { JWTPayload } from './src/auth/jwt'
 import { pt_BR } from './src/lang/locales/pt_BR'
 
 export {}
@@ -14,6 +15,7 @@ declare global {
   interface Res extends Response {
     locals: {
       lang: typeof props.language.default
+      jwtPayload?: JWTPayload
     }
   }
   type Next = NextFunction

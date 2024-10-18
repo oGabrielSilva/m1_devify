@@ -67,6 +67,7 @@ model User {
   password        String
   enabled         Boolean         @default(true)
   locked          Boolean         @default(false)
+  emailVerified   Boolean         @default(false)
   authorities     Authority[]
   userAuthorities UserAuthority[]
   social          Social[]

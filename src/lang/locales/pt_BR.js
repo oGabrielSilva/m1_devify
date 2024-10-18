@@ -18,9 +18,12 @@ export const pt_BR = {
     invalidPassword: 'Senha informada é muito fraca',
 
     usernameExist: 'Já existe um usuário com o username informado',
-    emailExist: 'Já existe um usuário com o email informado',
+    emailExist: 'Já existe um usuário com o e-mail informado',
 
     notFound: 'Usuário não encontrado',
     unauthorized: 'Credenciais não reconhecidas',
+    disabledOrLocked: 'Conta não ativa ou bloqueada',
+    newEmailBeDifferent: 'Novo e-mail precisa ser diferente do atual',
+    newPasswordBeDifferent: 'Nova senha precisa ser diferente da atual',
   },
 }

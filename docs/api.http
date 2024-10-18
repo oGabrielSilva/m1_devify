@@ -1,10 +1,11 @@
 @v1=http://127.0.0.1:3000/v1
+@bearer=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJjbTJlM3VtdjAwMDAwcmg5eTFxbGQwNTQyIiwibmFtZSI6InRlc3RlciIsInVzZXJuYW1lIjoib2R0diIsImF1dGhvcml0aWVzIjpbXSwidmVyaWZpZWQiOmZhbHNlLCJpYXQiOjE3MjkyOTA3NjIsImV4cCI6MTcyOTQ2MzU2MiwiYXVkIjoiRGV2aWZ5IiwiaXNzIjoiYXBpLmRldmlmeS5jeW91Iiwic3ViIjoidGVzdEB0ZXN0LmNzbSJ9.fuQGHmrRnwu89uFqHvS_EZ5NujNd9pl0mG4xSafiOeA
 
 ### Health
 GET {{v1}}/health HTTP/1.1
 
 ### Account create
-POST {{v1}}/account HTTP/1.1
+POST {{v1}}/account/sign-up HTTP/1.1
 Content-Type: application/json
 
 {
@@ -19,6 +20,43 @@ POST {{v1}}/account/session HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "test@test.comd",
+  "email": "test@test.csm",
   "password": "123aA123"
+}
+
+### Get user
+GET {{v1}}/account HTTP/1.1
+Authorization: {{bearer}}
+
+### Account update
+PATCH {{v1}}/account HTTP/1.1
+Authorization: {{bearer}}
+Content-Type: application/json
+
+{
+  # "username": "odtv",
+  "name": "tester",
+  "bio": "Opsssa"
+}
+
+### Account e-mail update
+PATCH {{v1}}/account/e-mail HTTP/1.1
+Authorization: {{bearer}}
+Content-Type: application/json
+
+{
+  "email": "test@test.csm",
+  "newEmail": "test@test.csm",
+  "password": "123aA123"
+}
+
+### Account password update
+PATCH {{v1}}/account/password HTTP/1.1
+Authorization: {{bearer}}
+Content-Type: application/json
+
+{
+  "email": "test@test.csm",
+  "password": "123aA123.",
+  "newPassword": "123aA123"
 }

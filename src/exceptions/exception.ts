@@ -7,7 +7,7 @@ export class Exception extends Error {
   constructor(
     readonly message: string,
     readonly status: number,
-    private readonly request: Request
+    private readonly request: Request,
   ) {
     super(message)
   }
@@ -87,7 +87,7 @@ export class ServiceUnavailable extends Exception {
 export function getExceptionByStatusCode(
   httpStatus: number,
   request: Request,
-  response: Response
+  response: Response,
 ): Exception {
   const strings = getStringsByContext(response)
 
