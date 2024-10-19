@@ -1,10 +1,14 @@
-import type { PrismaClient, User } from '@prisma/client'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { Authority, PrismaClient, Social, User as U } from '@prisma/client'
 import type { Request } from 'express'
 import { Forbidden, NotFound } from '../exceptions/exception'
 import { getStringsByContext } from '../lang/handler'
+import { authorityToDTOJSON } from './authorityService'
+import { socialToJSONDTO } from './socialService'
+
+type User = U & { social: Social[]; authorities: Authority[] }
 
 export function userToDTOJSON(user: User, bearerToken?: string) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const data = { ...user } as any
 
   delete data.avatarFilePath
@@ -13,6 +17,14 @@ export function userToDTOJSON(user: User, bearerToken?: string) {
   delete data.password
 
   if (data.bio === null) data.bio = ''
+
+  if (data.social) {
+    data.social = user.social.map((social) => socialToJSONDTO(social))
+  }
+
+  if (data.authorities) {
+    data.authorities = user.authorities.map((a) => authorityToDTOJSON(a))
+  }
 
   if (bearerToken) {
     return { user: data, bearerToken }
@@ -43,8 +55,12 @@ export async function fetchUserFromDB(
   uid: string,
   client: PrismaClient,
   req: Request,
-  strings: AppLang,
+  strings?: AppLang,
 ) {
+  if (!strings) {
+    strings = getStringsByContext(req.res!)
+  }
+
   const currentUser = await client.user.findUnique({ where: { uid } })
 
   if (!currentUser) throw new NotFound(strings.account.notFound, req)

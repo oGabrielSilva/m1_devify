@@ -1,4 +1,5 @@
 export const pt_BR = {
+  invalidURL: 'URL inválida',
   exception: {
     badRequest: 'Solicitação inválida',
     unauthorized: 'Não autorizado',
@@ -25,5 +26,9 @@ export const pt_BR = {
     disabledOrLocked: 'Conta não ativa ou bloqueada',
     newEmailBeDifferent: 'Novo e-mail precisa ser diferente do atual',
     newPasswordBeDifferent: 'Nova senha precisa ser diferente da atual',
+  },
+  social: {
+    invalidIdentifer: 'Identificador inválido ou nulo',
+    invalidDetails: 'Detalhes não pode ser muito grande',
   },
 }

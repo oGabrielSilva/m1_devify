@@ -60,3 +60,34 @@ Content-Type: application/json
   "password": "123aA123.",
   "newPassword": "123aA123"
 }
+
+### Social
+POST {{v1}}/social HTTP/1.1
+Authorization: {{bearer}}
+Content-Type: application/json
+
+{
+  "identifier": "Devify",
+  "url": "api.devify.cyou/v1",
+  "details": "devify"
+}
+
+### Update Social
+PATCH {{v1}}/social HTTP/1.1
+Authorization: {{bearer}}
+Content-Type: application/json
+
+{
+  "identifier": "Devify",
+  "url": "api.devify.cyou",
+  "details": "devify"
+}
+
+### Delete Social
+DELETE {{v1}}/social HTTP/1.1
+Authorization: {{bearer}}
+Content-Type: application/json
+
+{
+  "identifier": "Devifys"
+}

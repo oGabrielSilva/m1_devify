@@ -58,7 +58,7 @@ model User {
   uid String @unique @default(cuid())
 
   email          String  @unique @db.VarChar(150)
-  name           String  @db.VarChar(50)
+  name           String  @db.VarChar(55)
   username       String  @unique @db.VarChar(55)
   avatarURL      String?
   avatarFilePath String?
@@ -78,7 +78,7 @@ model User {
 model Social {
   id Int @id @default(autoincrement())
 
-  identifier String  @db.VarChar(50)
+  identifier String  @unique @db.VarChar(50)
   url        String
   details    String? @db.VarChar(30)
 

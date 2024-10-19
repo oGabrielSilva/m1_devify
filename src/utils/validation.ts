@@ -1,17 +1,18 @@
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-const URLRegex =
-  /(https:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/
+const URLRegex = /^((https):\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w-./?%&=]*)?$/
 
 export function isURLValid(url: string) {
   return typeof url === 'string' && !url.startsWith('http:') && URLRegex.test(url)
 }
 
 export function isNameValid(name: string) {
-  return typeof name === 'string' && name.trim().length >= 2
+  if (typeof name !== 'string') return false
+  name = name.trim()
+  return name.length >= 2 && name.length <= 55
 }
 
 export function isEmailValid(email: string) {
-  return typeof email === 'string' && emailRegex.test(email.trim())
+  return typeof email === 'string' && email.length <= 150 && emailRegex.test(email.trim())
 }
 
 export function isPasswordValid(password: string): boolean {
@@ -27,10 +28,24 @@ export function isPasswordValid(password: string): boolean {
   return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumber
 }
 
-export function normalizeText(text: string) {
+export function normalizeText(text?: string) {
   return typeof text === 'string' ? text.trim() : ''
 }
 
 export function normalizeURI(uri: string) {
   return typeof uri === 'string' ? encodeURI(uri) : ''
+}
+
+export function isSocialIndetifierValid(descriptor: string) {
+  if (typeof descriptor !== 'string') return false
+
+  descriptor = descriptor.trim()
+  return descriptor.length > 0 && descriptor.length <= 50
+}
+
+export function isSocialDetailsValid(details: string) {
+  if (typeof details !== 'string') return false
+
+  details = details.trim()
+  return details.length <= 30
 }
