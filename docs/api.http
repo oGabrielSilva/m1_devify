@@ -1,5 +1,5 @@
 @v1=http://127.0.0.1:3000/v1
-@bearer=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJjbTJlM3VtdjAwMDAwcmg5eTFxbGQwNTQyIiwibmFtZSI6InRlc3RlciIsInVzZXJuYW1lIjoib2R0diIsImF1dGhvcml0aWVzIjpbXSwidmVyaWZpZWQiOmZhbHNlLCJpYXQiOjE3MjkyOTA3NjIsImV4cCI6MTcyOTQ2MzU2MiwiYXVkIjoiRGV2aWZ5IiwiaXNzIjoiYXBpLmRldmlmeS5jeW91Iiwic3ViIjoidGVzdEB0ZXN0LmNzbSJ9.fuQGHmrRnwu89uFqHvS_EZ5NujNd9pl0mG4xSafiOeA
+@bearer=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJjbTJoMGk2cjAwMDAxb254MTA5a2VyNThmIiwibmFtZSI6IlRlc3RlciIsInVzZXJuYW1lIjoiYWJicyIsImF1dGhvcml0aWVzIjpbXSwidmVyaWZpZWQiOmZhbHNlLCJpYXQiOjE3MjkzOTM5NDgsImV4cCI6MTcyOTU2Njc0OCwiYXVkIjoiRGV2aWZ5IiwiaXNzIjoiYXBpLmRldmlmeS5jeW91Iiwic3ViIjoidGVzdEB0ZXN0LmNvbWQifQ.CS5SNa24nnOZiXRISRy-hbIkml55BU-SHG6ut7BQeto
 
 ### Health
 GET {{v1}}/health HTTP/1.1
@@ -20,7 +20,7 @@ POST {{v1}}/account/session HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "test@test.csm",
+  "email": "test@test.comd",
   "password": "123aA123"
 }
 
@@ -91,3 +91,4 @@ Content-Type: application/json
 {
   "identifier": "Devifys"
 }
+

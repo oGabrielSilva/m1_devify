@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Authority, PrismaClient, Social, User as U } from '@prisma/client'
+import { Authority, PrismaClient, Social, User as U } from '@prisma/client'
 import type { Request } from 'express'
+import { JWTPayload } from '../auth/jwt'
 import { Forbidden, NotFound } from '../exceptions/exception'
 import { getStringsByContext } from '../lang/handler'
-import { authorityToDTOJSON } from './authorityService'
 import { socialToJSONDTO } from './socialService'
 
 type User = U & { social: Social[]; authorities: Authority[] }
@@ -20,10 +19,6 @@ export function userToDTOJSON(user: User, bearerToken?: string) {
 
   if (data.social) {
     data.social = user.social.map((social) => socialToJSONDTO(social))
-  }
-
-  if (data.authorities) {
-    data.authorities = user.authorities.map((a) => authorityToDTOJSON(a))
   }
 
   if (bearerToken) {
@@ -69,4 +64,12 @@ export async function fetchUserFromDB(
   }
 
   return currentUser
+}
+
+export function isRoot(user: User | JWTPayload) {
+  return !!user.authorities.find((at) => at === Authority.ROOT)
+}
+
+export function isAdmin(user: User | JWTPayload) {
+  return !!user.authorities.find((at) => at === Authority.ROOT || at === Authority.ADMIN)
 }

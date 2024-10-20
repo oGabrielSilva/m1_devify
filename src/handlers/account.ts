@@ -36,7 +36,7 @@ async function whoAmI(req: Req, res: Res) {
 
   const user = await client.user.findUnique({
     where: { uid },
-    include: { authorities: true, social: true },
+    include: { social: true },
   })
 
   if (!user) {
@@ -71,7 +71,7 @@ async function signIn(req: Req<SignInDTO>, res: Res) {
 
   const user = await client.user.findUnique({
     where: { email: req.body.email },
-    include: { authorities: true, social: true },
+    include: { social: true },
   })
 
   if (!user) {
@@ -148,7 +148,7 @@ async function signUp(req: Req<SignUpDTO>, res: Res) {
       username: req.body.username,
       password,
     },
-    include: { authorities: true, social: true },
+    include: { social: true },
   })
 
   const token = signJWT(user, user.authorities)
@@ -213,7 +213,7 @@ async function update(req: Req<UpdateAccountDTO>, res: Res) {
   const user = await client.user.update({
     where: { uid: userDetails.uid },
     data: { ...details },
-    include: { authorities: true, social: true },
+    include: { social: true },
   })
 
   const t = signJWT(user, user.authorities)
@@ -270,7 +270,6 @@ async function updateEmail(req: Req<UpdateEmailDTO>, res: Res) {
   const user = await client.user.update({
     where: { uid: userDetails.uid },
     data: { email: newEmail, emailVerified: false },
-    include: { authorities: true },
   })
 
   const t = signJWT(user, user.authorities)
@@ -315,7 +314,7 @@ export async function updatePassword(req: Req<UpdatePasswordDTO>, res: Res) {
   const updatedUser = await client.user.update({
     data: { password },
     where: { id: currentUser.id },
-    include: { authorities: true, social: true },
+    include: { social: true },
   })
   const t = signJWT(updatedUser, updatedUser.authorities)
 

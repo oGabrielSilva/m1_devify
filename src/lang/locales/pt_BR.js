@@ -11,6 +11,7 @@ export const pt_BR = {
     internalServerError: 'Ocorreu um erro interno',
     notImplemented: 'Funcionalidade não implementada',
     serviceUnavailable: 'Serviço indisponível',
+    conflictEntityAlreadyExists: 'Entidade já existe',
   },
   account: {
     invalidName: 'Nome informado é muito curto ou não foi considerado válido',
@@ -30,5 +31,9 @@ export const pt_BR = {
   social: {
     invalidIdentifer: 'Identificador inválido ou nulo',
     invalidDetails: 'Detalhes não pode ser muito grande',
+  },
+  authority: {
+    invalidDescriptor: 'O descritor da autoridade é inválido ou nulo',
+    descriptorTooLarge: 'O descritor é muito grande',
   },
 }

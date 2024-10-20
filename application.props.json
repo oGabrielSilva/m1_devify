@@ -14,5 +14,15 @@
     ],
     "default": { "code": "pt-BR", "file": "pt_BR.ts" },
     "headerName": "Preferred-Language"
+  },
+  "admin": {
+    "rootUser": {
+      "details": {
+        "email": "devify.cyou@gmail.com",
+        "name": "Gabriel Silva",
+        "username": "oGabrielSilva"
+      },
+      "seedUser": true
+    }
   }
 }

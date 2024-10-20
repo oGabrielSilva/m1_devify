@@ -1,6 +1,9 @@
 -- CreateEnum
 CREATE TYPE "UserActionType" AS ENUM ('LOCK', 'UNLOCK', 'ENABLE', 'DISABLE', 'ADD_AUTHORITY', 'REMOVE_AUTHORITY');
 
+-- CreateEnum
+CREATE TYPE "Authority" AS ENUM ('COMMON', 'EDITOR', 'HELPER', 'MODERATOR', 'ADMIN', 'ROOT');
+
 -- CreateTable
 CREATE TABLE "UserAction" (
     "actionById" INTEGER NOT NULL,
@@ -14,30 +17,11 @@ CREATE TABLE "UserAction" (
 );
 
 -- CreateTable
-CREATE TABLE "Authority" (
-    "id" SERIAL NOT NULL,
-    "descriptor" TEXT NOT NULL,
-    "userId" INTEGER NOT NULL,
-
-    CONSTRAINT "Authority_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "UserAuthority" (
-    "userId" INTEGER NOT NULL,
-    "authorityId" INTEGER NOT NULL,
-    "assignedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "assignedById" INTEGER NOT NULL,
-
-    CONSTRAINT "UserAuthority_pkey" PRIMARY KEY ("userId","authorityId")
-);
-
--- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "uid" TEXT NOT NULL,
     "email" VARCHAR(150) NOT NULL,
-    "name" VARCHAR(50) NOT NULL,
+    "name" VARCHAR(55) NOT NULL,
     "username" VARCHAR(55) NOT NULL,
     "avatarURL" TEXT,
     "avatarFilePath" TEXT,
@@ -45,6 +29,8 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "enabled" BOOLEAN NOT NULL DEFAULT true,
     "locked" BOOLEAN NOT NULL DEFAULT false,
+    "emailVerified" BOOLEAN NOT NULL DEFAULT false,
+    "authorities" "Authority"[],
     "joinedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -63,9 +49,6 @@ CREATE TABLE "Social" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Authority_descriptor_key" ON "Authority"("descriptor");
-
--- CreateIndex
 CREATE UNIQUE INDEX "User_uid_key" ON "User"("uid");
 
 -- CreateIndex
@@ -74,11 +57,8 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
--- AddForeignKey
-ALTER TABLE "Authority" ADD CONSTRAINT "Authority_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "UserAuthority" ADD CONSTRAINT "UserAuthority_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "Social_identifier_key" ON "Social"("identifier");
 
 -- AddForeignKey
 ALTER TABLE "Social" ADD CONSTRAINT "Social_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

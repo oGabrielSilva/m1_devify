@@ -6,7 +6,7 @@ export type JWTPayload = {
   uid: string
   name: string
   username: string
-  authorities: Omit<Authority, 'id' | 'userId'>[]
+  authorities: Authority[]
   sub: string
   verified: boolean
 }
@@ -56,7 +56,7 @@ function getJWTPayload(user: User, authorities: Authority[]) {
     uid: user.uid,
     name: user.name,
     username: user.username,
-    authorities: authorities.map((a) => ({ descriptor: a.descriptor })),
+    authorities,
     verified: user.emailVerified,
   } as JWTPayload
 }

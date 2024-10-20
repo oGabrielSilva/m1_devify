@@ -4,6 +4,7 @@ require('dotenv').config({ path: '.env' })
 import bodyParser from 'body-parser'
 import express, { type NextFunction, type Request, type Response } from 'express'
 import morgan from 'morgan'
+import { seedRootUser } from './configurations/seed'
 import { getDBClient } from './db/client'
 import { Exception, getExceptionByStatusCode } from './exceptions/exception'
 import { getStringsByContext } from './lang/handler'
@@ -22,6 +23,7 @@ async function main() {
 
   app.use(asyncHandler(languageMiddleware))
 
+  await seedRootUser()
   defineRouterV1(app)
 
   app.use((req, res, next) => {
@@ -32,7 +34,6 @@ async function main() {
     next()
   })
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
     if (err instanceof Exception) {
       res.status(err.status).json(err.toJSON()).end()
@@ -51,15 +52,15 @@ async function main() {
         new Exception(
           getStringsByContext(res).exception.internalServerError,
           Http.INTERNAL_SERVER_ERROR,
-          req
-        ).toJSON()
+          req,
+        ).toJSON(),
       )
       .end()
     console.log(err)
   })
 
   app.listen(props.api.port, () =>
-    console.log(`Application on: http://127.0.0.1:${props.api.port}\n`)
+    console.log(`Application on: http://127.0.0.1:${props.api.port}\n`),
   )
 }
 
