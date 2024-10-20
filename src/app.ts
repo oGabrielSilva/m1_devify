@@ -4,7 +4,8 @@ require('dotenv').config({ path: '.env' })
 import bodyParser from 'body-parser'
 import express, { type NextFunction, type Request, type Response } from 'express'
 import morgan from 'morgan'
-import { seedRootUser } from './configurations/seed'
+import { seedRootUser } from './configurations/seedRootUser'
+import { seedStacks } from './configurations/seedStacks'
 import { getDBClient } from './db/client'
 import { Exception, getExceptionByStatusCode } from './exceptions/exception'
 import { getStringsByContext } from './lang/handler'
@@ -23,7 +24,7 @@ async function main() {
 
   app.use(asyncHandler(languageMiddleware))
 
-  await seedRootUser()
+  seedStacks(await seedRootUser())
   defineRouterV1(app)
 
   app.use((req, res, next) => {

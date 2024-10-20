@@ -73,3 +73,7 @@ export function isRoot(user: User | JWTPayload) {
 export function isAdmin(user: User | JWTPayload) {
   return !!user.authorities.find((at) => at === Authority.ROOT || at === Authority.ADMIN)
 }
+
+export function isEditor(user: User | JWTPayload) {
+  return !!user.authorities.find((at) => at === Authority.EDITOR)
+}

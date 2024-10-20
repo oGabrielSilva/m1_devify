@@ -23,6 +23,16 @@
         "username": "oGabrielSilva"
       },
       "seedUser": true
+    },
+    "stack": {
+      "seed": [
+        {
+          "name": "Java",
+          "slug": "java",
+          "description": "",
+          "metaDescription": ""
+        }
+      ]
     }
   }
 }

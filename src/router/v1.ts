@@ -29,5 +29,12 @@ export function defineRouterV1(app: e.Application) {
   router.patch('/social', asyncHandler(social.patch))
   router.delete('/social', asyncHandler(social.delete))
 
+  //stack
+  router.get('/stacks')
+  router.get('/stack/:slug')
+  router.post('/stack')
+  router.patch('/stack')
+  router.delete('/stack/:slug')
+
   app.use('/v1', router)
 }

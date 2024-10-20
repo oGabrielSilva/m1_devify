@@ -75,3 +75,35 @@ model Social {
   user   User @relation(fields: [userId], references: [id])
   userId Int
 }
+
+model Stack {
+  id Int @id @default(autoincrement())
+
+  name            String @unique @db.VarChar(55)
+  slug            String @unique @db.VarChar(100)
+  description     String
+  metaDescription String @db.VarChar(220)
+
+  enabled          Boolean  @default(true)
+  createdByUserUid String
+  createdAt        DateTime @default(now())
+}
+
+model ActionOnStack {
+  actionByIud   Int
+  targetStackId Int
+
+  reason  String?
+  details String?
+  action  ActionOnStackType
+
+  createdAt DateTime @default(now())
+
+  @@id([actionByIud, targetStackId])
+}
+
+enum ActionOnStackType {
+  ENABLE
+  DISABLE
+  EDIT
+}

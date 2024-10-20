@@ -147,6 +147,7 @@ async function signUp(req: Req<SignUpDTO>, res: Res) {
       name: req.body.name,
       username: req.body.username,
       password,
+      authorities: ['COMMON'],
     },
     include: { social: true },
   })

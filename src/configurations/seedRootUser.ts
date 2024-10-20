@@ -18,7 +18,14 @@ export async function seedRootUser() {
 
       const { email, name, username } = props.admin.rootUser.details
       const user = await client.user.create({
-        data: { email, name, username, password: passwordHash, emailVerified: true },
+        data: {
+          email,
+          name,
+          username,
+          password: passwordHash,
+          emailVerified: true,
+          authorities: ['ADMIN', 'ROOT', 'COMMON', 'EDITOR', 'HELPER', 'MODERATOR'],
+        },
       })
 
       console.log(`Root user created with password: ${password}`)
