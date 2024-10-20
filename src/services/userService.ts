@@ -7,7 +7,7 @@ import { socialToJSONDTO } from './socialService'
 
 type User = U & { social: Social[]; authorities: Authority[] }
 
-export function userToDTOJSON(user: User, bearerToken?: string) {
+export function userToDTOJson(user: User, bearerToken?: string) {
   const data = { ...user } as any
 
   delete data.avatarFilePath
@@ -66,12 +66,27 @@ export async function fetchUserFromDB(
   return currentUser
 }
 
+export function isAuthorityValid(descriptor: unknown) {
+  if (typeof descriptor !== 'string') return false
+  return (
+    ['ADMIN', 'COMMON', 'EDITOR', 'HELPER', 'MODERATOR', 'ROOT'] as Authority[]
+  ).includes(descriptor as Authority)
+}
+
 export function isRoot(user: User | JWTPayload) {
   return !!user.authorities.find((at) => at === Authority.ROOT)
 }
 
 export function isAdmin(user: User | JWTPayload) {
   return !!user.authorities.find((at) => at === Authority.ROOT || at === Authority.ADMIN)
+}
+
+export function isModerator(user: User | JWTPayload) {
+  return !!user.authorities.find((at) => at === Authority.MODERATOR)
+}
+
+export function isHelper(user: User | JWTPayload) {
+  return !!user.authorities.find((at) => at === Authority.HELPER)
 }
 
 export function isEditor(user: User | JWTPayload) {

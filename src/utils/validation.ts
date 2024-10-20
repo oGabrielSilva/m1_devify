@@ -1,3 +1,5 @@
+import s from 'slugify'
+
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 const URLRegex = /^((https):\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w-./?%&=]*)?$/
 
@@ -48,4 +50,12 @@ export function isSocialDetailsValid(details: string) {
 
   details = details.trim()
   return details.length <= 30
+}
+
+export function isMetaDescriptionValid(meta: string) {
+  return typeof meta === 'string' && meta.length < 220
+}
+
+export function slugify(descriptor: string) {
+  return s(descriptor, { lower: true, strict: true })
 }

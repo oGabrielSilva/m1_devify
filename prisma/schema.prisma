@@ -23,12 +23,12 @@ enum UserActionType {
 }
 
 enum Authority {
-  COMMON
-  EDITOR
-  HELPER
-  MODERATOR
-  ADMIN
-  ROOT
+  COMMON //Usuário comum
+  EDITOR //Pode criar e editar artigos
+  HELPER //Pode publicar e desativar artigos, criar e editar stacks
+  MODERATOR //Pode atribuir (ou remover) editores e helpers e pode desativar usuários
+  ADMIN //Pode criar moderadores, criar usuários
+  ROOT //Pode atribuir admins
 }
 
 model UserAction {

@@ -1,4 +1,4 @@
-import { User } from '@prisma/client'
+import { Authority, User } from '@prisma/client'
 import { signJWT } from '../auth/jwt'
 import { hashPassword, passwordMatch } from '../auth/password'
 import { getDBClient } from '../db/client'
@@ -14,7 +14,10 @@ import { getStringsByContext } from '../lang/handler'
 import {
   fetchUserFromDB,
   getCurrentUserDetailsOrThrowsForbidden,
-  userToDTOJSON,
+  isAdmin,
+  isAuthorityValid,
+  isRoot,
+  userToDTOJson,
 } from '../services/userService'
 import { Http } from '../utils/http'
 import {
@@ -47,7 +50,7 @@ async function whoAmI(req: Req, res: Res) {
     throw new Forbidden(strings.account.disabledOrLocked, req)
   }
 
-  res.status(Http.OK).json(userToDTOJSON(user))
+  res.status(Http.OK).json(userToDTOJson(user))
 }
 
 export type SignInDTO = {
@@ -88,7 +91,7 @@ async function signIn(req: Req<SignInDTO>, res: Res) {
 
   const token = signJWT(user, user.authorities)
 
-  res.status(Http.OK).json(userToDTOJSON(user, token)).end()
+  res.status(Http.OK).json(userToDTOJson(user, token)).end()
 }
 
 export type SignUpDTO = {
@@ -154,7 +157,7 @@ async function signUp(req: Req<SignUpDTO>, res: Res) {
 
   const token = signJWT(user, user.authorities)
 
-  res.status(Http.CREATED).json(userToDTOJSON(user, token)).end()
+  res.status(Http.CREATED).json(userToDTOJson(user, token)).end()
 }
 
 type UpdateAccountDTO = {
@@ -218,7 +221,7 @@ async function update(req: Req<UpdateAccountDTO>, res: Res) {
   })
 
   const t = signJWT(user, user.authorities)
-  res.status(Http.OK).json(userToDTOJSON(user, t)).end()
+  res.status(Http.OK).json(userToDTOJson(user, t)).end()
 }
 
 type UpdateEmailDTO = {
@@ -319,7 +322,61 @@ export async function updatePassword(req: Req<UpdatePasswordDTO>, res: Res) {
   })
   const t = signJWT(updatedUser, updatedUser.authorities)
 
-  res.status(Http.OK).json(userToDTOJSON(updatedUser, t)).end()
+  res.status(Http.OK).json(userToDTOJson(updatedUser, t)).end()
+}
+
+type PushAuthorityDTO = {
+  target: string
+  authority: Authority
+  password: string
+}
+
+async function pushAuthority(req: Req<PushAuthorityDTO>, res: Res) {
+  const { password, target } = req.body
+  const authority = normalizeText(req.body.authority).toUpperCase()
+  const strings = getStringsByContext(res)
+
+  if (!isAuthorityValid(authority)) {
+    throw new BadRequest(strings.account.invalidAuthority, req)
+  }
+
+  const moderatorDetails = getCurrentUserDetailsOrThrowsForbidden(res)
+  const client = getDBClient()
+  const userTarget = await client.user.findUnique({ where: { email: target } })
+
+  if (!userTarget) {
+    throw new NotFound(strings.account.notFound, req)
+  }
+
+  if (userTarget.authorities.includes(authority as Authority)) {
+    res.status(Http.NO_CONTENT).end()
+  }
+
+  const moderator = await client.user.findUnique({ where: { uid: moderatorDetails.uid } })
+  if (!passwordMatch(password, moderator!.password)) {
+    throw new Unauthorized(strings.account.unauthorized, req)
+  }
+
+  if (authority === 'MODERATOR' && !isAdmin(moderatorDetails)) {
+    throw new Unauthorized(strings.account.insufficientPermissions, req)
+  }
+
+  if (authority === 'ADMIN' && !isRoot(moderatorDetails)) {
+    throw new Unauthorized(strings.account.insufficientPermissions, req)
+  }
+
+  if (authority === 'ROOT' && !isRoot(moderatorDetails)) {
+    throw new BadRequest(strings.account.insufficientPermissions, req)
+  }
+
+  await client.user.update({
+    where: { id: userTarget.id },
+    data: {
+      authorities: [...new Set([...userTarget.authorities, authority as Authority])],
+    },
+  })
+
+  res.status(Http.NO_CONTENT).end()
 }
 
 export default {
@@ -329,4 +386,5 @@ export default {
   update,
   updateEmail,
   updatePassword,
+  pushAuthority,
 }

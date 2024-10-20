@@ -1,6 +1,7 @@
 export const pt_BR = {
   invalidURL: 'URL inválida',
   exception: {
+    invalidCustomField: (fieldName) => `O campo "${fieldName}" é inválido ou nulo`,
     badRequest: 'Solicitação inválida',
     unauthorized: 'Não autorizado',
     forbidden: 'Acesso proibido',
@@ -11,7 +12,7 @@ export const pt_BR = {
     internalServerError: 'Ocorreu um erro interno',
     notImplemented: 'Funcionalidade não implementada',
     serviceUnavailable: 'Serviço indisponível',
-    conflictEntityAlreadyExists: 'Entidade já existe',
+    conflictEntityAlreadyExists: 'Entidade já cadastrada',
   },
   account: {
     invalidName: 'Nome informado é muito curto ou não foi considerado válido',
@@ -27,13 +28,18 @@ export const pt_BR = {
     disabledOrLocked: 'Conta não ativa ou bloqueada',
     newEmailBeDifferent: 'Novo e-mail precisa ser diferente do atual',
     newPasswordBeDifferent: 'Nova senha precisa ser diferente da atual',
+    insufficientPermissions:
+      'Não autorizado. Você não tem permissão para acessar o recurso solicitado',
+    invalidAuthority: 'Autoridade não reconhecida',
   },
   social: {
     invalidIdentifer: 'Identificador inválido ou nulo',
     invalidDetails: 'Detalhes não pode ser muito grande',
   },
-  authority: {
-    invalidDescriptor: 'O descritor da autoridade é inválido ou nulo',
-    descriptorTooLarge: 'O descritor é muito grande',
+  stack: {
+    slugOrNameNotSent: 'Informe o nome ou slug da entidade',
+    slugAlreadyExists:
+      'Não foi possível salvar, pois há uma entidade com slug parecido. Dê outro nome para a Stack',
+    invalidName: 'A Stack precisa ter um nome válido',
   },
 }

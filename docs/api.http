@@ -1,8 +1,10 @@
 @v1=http://127.0.0.1:3000/v1
-@bearer=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJjbTJoMGk2cjAwMDAxb254MTA5a2VyNThmIiwibmFtZSI6IlRlc3RlciIsInVzZXJuYW1lIjoiYWJicyIsImF1dGhvcml0aWVzIjpbXSwidmVyaWZpZWQiOmZhbHNlLCJpYXQiOjE3MjkzOTM5NDgsImV4cCI6MTcyOTU2Njc0OCwiYXVkIjoiRGV2aWZ5IiwiaXNzIjoiYXBpLmRldmlmeS5jeW91Iiwic3ViIjoidGVzdEB0ZXN0LmNvbWQifQ.CS5SNa24nnOZiXRISRy-hbIkml55BU-SHG6ut7BQeto
+@bearer=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJjbTJoMGk2cjAwMDAxb254MTA5a2VyNThmIiwibmFtZSI6IlRlc3RlciIsInVzZXJuYW1lIjoiYWJicyIsImF1dGhvcml0aWVzIjpbIkhFTFBFUiJdLCJ2ZXJpZmllZCI6ZmFsc2UsImlhdCI6MTcyOTQ1MTcwMCwiZXhwIjoxNzI5NjI0NTAwLCJhdWQiOiJEZXZpZnkiLCJpc3MiOiJhcGkuZGV2aWZ5LmN5b3UiLCJzdWIiOiJ0ZXN0QHRlc3QuY29tZCJ9.qDE22WYnBP-9DRpCFjIZv0B5UZavkyXdwMiznwYNOs0
 
-### Health
+# Health
 GET {{v1}}/health HTTP/1.1
+
+# Account
 
 ### Account create
 POST {{v1}}/account/sign-up HTTP/1.1
@@ -57,11 +59,24 @@ Content-Type: application/json
 
 {
   "email": "test@test.csm",
-  "password": "123aA123.",
+  "password": "123aA123",
   "newPassword": "123aA123"
 }
 
-### Social
+### Account push authority
+PATCH {{v1}}/account/authority HTTP/1.1
+Authorization: {{bearer}}
+Content-Type: application/json
+
+{
+  "target": "test@test.csm",
+  "authority": "HELPER",
+  "password": "123aA123"
+}
+
+# Social
+
+### Add social
 POST {{v1}}/social HTTP/1.1
 Authorization: {{bearer}}
 Content-Type: application/json
@@ -92,3 +107,37 @@ Content-Type: application/json
   "identifier": "Devifys"
 }
 
+# Stacks
+
+### Get all
+GET {{v1}}/stacks?skip=0&take=10 HTTP/1.1
+
+### Get
+GET {{v1}}/stack/desenvolvimento-full-stack HTTP/1.1
+
+### Post
+POST {{v1}}/stack HTTP/1.1
+Authorization: {{bearer}}
+Content-Type: application/json
+
+{
+  "name": "Desenvolvimento Full Stack"
+}
+
+### Patch
+PATCH {{v1}}/stack/testando HTTP/1.1
+Authorization: {{bearer}}
+Content-Type: application/json
+
+{
+  "name": "Desenvolvimento Full Stack",
+  "metaDescription": "Testando a meta description"
+}
+
+### Enable
+PATCH {{v1}}/stack/desenvolvimento-full-stack HTTP/1.1
+Authorization: {{bearer}}
+
+### Disable
+DELETE {{v1}}/stack/desenvolvimento-full-stack HTTP/1.1
+Authorization: {{bearer}}
